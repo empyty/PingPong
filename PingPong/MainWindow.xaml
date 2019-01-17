@@ -1,0 +1,42 @@
+﻿<Window x:Class="PingPong.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PingPong"
+        mc:Ignorable="d"
+        Title="PingPong" DataContext="{StaticResource SingleDataContext}"
+        Height="{Binding MainCanvasVM.HeightForMainWindow}"
+        Width="{Binding MainCanvasVM.WidthForMainWindow}"
+        ResizeMode="CanMinimize">
+    
+    <Canvas x:Name="MainCanvas" Height="{Binding MainCanvasVM.CanvasHeight}" Width="{Binding MainCanvasVM.CanvasWidth}">
+
+        <Ellipse Fill="DarkBlue" Height="{Binding BallVM.BallWidth}" Width="{Binding BallVM.BallWidth}" Stroke="Black"
+                 Canvas.Top="{Binding BallVM.BallPositionY, UpdateSourceTrigger=PropertyChanged}"
+                 Canvas.Left="{Binding BallVM.BallPositionX, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Rectangle x:Name="Paddle" Height="{Binding PaddleVM.PaddleHeight}" Width="{Binding PaddleVM.PaddleWidth}"
+                   MaxWidth="{Binding PaddleVM.PaddleMaxWidth}" Canvas.Bottom="{Binding PaddleVM.PaddlePositionY}"
+                   HorizontalAlignment="Left" Fill="Black" Stroke="Red"
+                   Canvas.Left="{Binding PaddleVM.PaddlePositionX, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="0,0,0,10" />
+                </Style>
+            </StackPanel.Resources>
+            <Button Name="Restart" Visibility="Hidden">MessageBox with default choice</Button>
+        </StackPanel>
+    </Canvas>
+    
+    <Window.InputBindings>
+
+        <KeyBinding CommandParameter="left" Command="{Binding PaddleVM.CommandMovePaddle}" Key="Left"/>
+        <KeyBinding CommandParameter="right" Command="{Binding PaddleVM.CommandMovePaddle}" Key="Right"/>
+        <KeyBinding Command="{Binding RestartVm.ViewMessageCommand}" Key="Escape"></KeyBinding>
+
+    </Window.InputBindings>
+    
+</Window>
